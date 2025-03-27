@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D-Core | 3D Printing Service</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="logo.png" alt="3D-Core Logo">
+            <h1>3D-Core</h1>
+        </div>
+        <p>Your Reliable 3D Printing Partner</p>
+    </header>
+
+    <main>
+        <section class="info">
+            <h2>Supported File Formats</h2>
+            <p>We accept <strong>.STEP</strong> and <strong>.STL</strong> files for 3D printing.</p>
+        </section>
+
+        <section class="pricing">
+            <h2>Printing Prices</h2>
+            <p><strong>$0.10 per gram</strong> of printed material.</p>
+        </section>
+
+        <section class="upload">
+            <h2>Upload Your 3D Design</h2>
+            <input type="file" id="fileInput" accept=".stl,.step" style="display: none;">
+            <button id="uploadButton" onclick="handleUpload()">Select File</button>
+            <p id="fileName"></p>
+            <p id="status"></p>
+        </section>
+    </main>
+
+    <!-- Success Popup -->
+    <div id="successMessage" class="popup" style="display: none;">
+        <p>File Uploaded Successfully!</p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
