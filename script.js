@@ -13,7 +13,7 @@ function handleUpload() {
         successMessage.style.display = "block";
         setTimeout(() => {
             successMessage.style.display = "none";
-        }, 50000); // Show for 5 seconds
+        }, 5000); // Show for 5 seconds
 
         uploadFile(); // Proceed with file upload
     }
@@ -37,11 +37,12 @@ async function uploadFile() {
 
     const formData = new FormData();
     formData.append("file", selectedFile);
-    formData.append("password", "roboticore2025");
+    const password = process.env.UPLOAD_PASSWORD || "defaultPassword";
+    formData.append("password", password);
 
     status.innerText = "Uploading...";
 
-    const response = await fetch("http://localhost:5000/upload", {
+    const response = await fetch("https://3d-core.vercel.app/upload", {
         method: "POST",
         body: formData,
     });
