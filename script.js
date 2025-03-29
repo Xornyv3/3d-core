@@ -49,6 +49,6 @@ async function uploadFile() {
     if (data.success) {
         status.innerText = "Upload successful!";
     } else {
-        status.innerText = "Upload failed: " + data.error;
+        status.innerText = "Upload failed: " + (data.error || "Unknown error");
     }
 }
