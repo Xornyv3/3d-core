@@ -15,8 +15,26 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             min-height: 100vh;
-            background: linear-gradient(to bottom, #111827, #1f2937);
+            background: linear-gradient(180deg, #111827 0%, #1e3a8a 50%, #111827 100%);
             color: white;
+        }
+
+        /* Scrollbar styles */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1f2937;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #3b82f6;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2563eb;
         }
 
         /* Header styles */
@@ -30,17 +48,30 @@
         .header-bg {
             position: absolute;
             inset: 0;
+            z-index: 0;
+        }
+
+        .header-bg::before {
+            content: '';
+            position: absolute;
+            inset: 0;
             background-image: url('https://images.unsplash.com/photo-1631468155881-c6c9ff57de1d?q=80&w=2070');
             background-size: cover;
             background-position: center;
             opacity: 0.1;
-            z-index: 1;
+        }
+
+        .header-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, transparent, rgba(17, 24, 39, 0.5), #111827);
         }
 
         .header-content {
             position: relative;
             z-index: 2;
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
         }
 
@@ -53,7 +84,7 @@
         }
 
         .logo-text {
-            font-size: 3rem;
+            font-size: 3.5rem;
             font-weight: bold;
             background: linear-gradient(to right, #60a5fa, #a855f7);
             -webkit-background-clip: text;
@@ -61,16 +92,22 @@
             color: transparent;
         }
 
+        .subtitle {
+            font-size: 1.25rem;
+            color: #bfdbfe;
+            font-weight: 300;
+        }
+
         /* Main content styles */
         main {
-            max-width: 1200px;
+            max-width: 1280px;
             margin: 0 auto;
             padding: 3rem 1rem;
         }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 2rem;
             margin: 2rem 0;
         }
@@ -80,7 +117,7 @@
             backdrop-filter: blur(8px);
             border: 1px solid #374151;
             border-radius: 1rem;
-            padding: 2rem;
+            padding: 1.5rem;
             transition: all 0.3s ease;
         }
 
@@ -99,37 +136,49 @@
         .card-title {
             font-size: 1.5rem;
             font-weight: 600;
+            color: white;
+        }
+
+        .card-icon {
+            color: #60a5fa;
+        }
+
+        .price {
+            font-size: 2.25rem;
+            font-weight: bold;
+            color: #60a5fa;
+        }
+
+        .price-text {
+            color: #9ca3af;
+            margin-left: 0.5rem;
         }
 
         .upload-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
             background-color: #3b82f6;
             color: white;
             padding: 0.75rem 1.5rem;
             border-radius: 0.5rem;
             border: none;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
             font-size: 1rem;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.2s ease;
         }
 
         .upload-button:hover {
             background-color: #2563eb;
         }
 
-        .selected-file {
+        #selectedFileName {
             margin-top: 1rem;
             color: #9ca3af;
         }
 
-        .selected-file span {
-            color: #60a5fa;
-        }
-
         /* Success message styles */
-        .success-message {
+        #successMessage {
             position: fixed;
             top: 1rem;
             right: 1rem;
@@ -137,20 +186,22 @@
             color: white;
             padding: 0.75rem 1.5rem;
             border-radius: 0.5rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             display: none;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             animation: fadeInDown 0.3s ease-out;
         }
 
         /* Robot decoration */
         .robot-decoration {
             position: fixed;
-            bottom: 0;
-            right: 0;
-            opacity: 0.2;
+            bottom: 2rem;
+            right: 2rem;
+            width: 8rem;
+            height: 8rem;
+            color: rgba(96, 165, 250, 0.2);
             pointer-events: none;
-            width: 16rem;
-            height: 16rem;
         }
 
         /* Animations */
@@ -165,19 +216,25 @@
             }
         }
 
+        /* Format highlights */
+        .format-highlight {
+            color: #60a5fa;
+            font-weight: 600;
+        }
+
         /* Responsive adjustments */
         @media (max-width: 768px) {
-            .grid {
-                grid-template-columns: 1fr;
-            }
-
             .logo-text {
                 font-size: 2.5rem;
             }
 
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
             .robot-decoration {
-                width: 12rem;
-                height: 12rem;
+                width: 6rem;
+                height: 6rem;
             }
         }
     </style>
@@ -187,22 +244,22 @@
         <div class="header-bg"></div>
         <div class="header-content">
             <div class="logo-container">
-                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M6 9h12v9a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V9Z"></path>
                     <path d="M5.5 5.5A2.5 2.5 0 0 1 8 3h8a2.5 2.5 0 0 1 0 5H8a2.5 2.5 0 0 1-2.5-2.5Z"></path>
                 </svg>
                 <h1 class="logo-text">3D-Core</h1>
             </div>
-            <p class="text-xl text-gray-300">Your Reliable 3D Printing Partner</p>
+            <p class="subtitle">Your Reliable 3D Printing Partner</p>
         </div>
     </header>
 
     <main>
         <div class="grid">
-            <!-- File Formats Section -->
+            <!-- File Formats Card -->
             <div class="card">
                 <div class="card-header">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
                         <polyline points="14 2 14 8 20 8"></polyline>
                         <path d="m9 15 2 2 4-4"></path>
@@ -210,31 +267,31 @@
                     <h2 class="card-title">Supported Formats</h2>
                 </div>
                 <p style="color: #9ca3af;">
-                    We accept <span style="color: #60a5fa; font-weight: 600">.STEP</span> and
-                    <span style="color: #60a5fa; font-weight: 600">.STL</span> files for 3D printing.
+                    We accept <span class="format-highlight">.STEP</span> and
+                    <span class="format-highlight">.STL</span> files for 3D printing.
                 </p>
             </div>
 
-            <!-- Pricing Section -->
+            <!-- Pricing Card -->
             <div class="card">
                 <div class="card-header">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="m21.5 9.5-1.5 1.5-1.5-1.5L17 11l-1.5-1.5L14 11l-1.5-1.5L11 11l-1.5-1.5L8 11 6.5 9.5 5 11l-1.5-1.5L2 11V3l1.5 1.5L5 3l1.5 1.5L8 3l1.5 1.5L11 3l1.5 1.5L14 3l1.5 1.5L17 3l1.5 1.5L20 3l1.5 1.5L23 3v8l-1.5-1.5Z"></path>
-                        <path d="M21.5 11.5v4"></path>
-                        <path d="M2 11.5v4"></path>
+                    <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path>
+                        <path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path>
+                        <path d="M18 12a2 2 0 0 0 0 4h4v-4Z"></path>
                     </svg>
                     <h2 class="card-title">Printing Prices</h2>
                 </div>
-                <p style="color: #9ca3af;">
-                    <span style="font-size: 1.875rem; font-weight: bold; color: #60a5fa;">$0.10</span>
-                    <span style="color: #9ca3af;"> per gram</span> of printed material.
-                </p>
+                <div>
+                    <span class="price">$0.10</span>
+                    <span class="price-text">per gram of printed material</span>
+                </div>
             </div>
 
-            <!-- Upload Section -->
+            <!-- Upload Card -->
             <div class="card">
                 <div class="card-header">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg class="card-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                         <polyline points="17 8 12 3 7 8"></polyline>
                         <line x1="12" y1="3" x2="12" y2="15"></line>
@@ -251,26 +308,24 @@
                         </svg>
                         Select File
                     </button>
-                    <p id="selectedFileName" class="selected-file"></p>
+                    <p id="selectedFileName"></p>
                 </div>
             </div>
         </div>
     </main>
 
     <!-- Success Message -->
-    <div id="successMessage" class="success-message">
-        <p style="display: flex; align-items: center; gap: 0.5rem;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
-                <polyline points="14 2 14 8 20 8"></polyline>
-                <path d="m9 15 2 2 4-4"></path>
-            </svg>
-            File Uploaded Successfully!
-        </p>
+    <div id="successMessage">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <path d="m9 15 2 2 4-4"></path>
+        </svg>
+        <span>File Uploaded Successfully!</span>
     </div>
 
     <!-- Robot Decoration -->
-    <svg class="robot-decoration" xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <svg class="robot-decoration" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M12 8V4H8"></path>
         <path d="M16 8V4h4"></path>
         <rect width="16" height="12" x="4" y="8" rx="2"></rect>
@@ -289,9 +344,8 @@
             const file = event.target.files[0];
             if (file) {
                 const fileName = file.name;
-                document.getElementById('selectedFileName').innerHTML = 'Selected: <span>' + fileName + '</span>';
+                document.getElementById('selectedFileName').innerHTML = 'Selected: <span style="color: #60a5fa;">' + fileName + '</span>';
                 
-                // Change button text and onclick handler
                 const uploadBtn = document.getElementById('uploadBtn');
                 uploadBtn.innerHTML = `
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -307,13 +361,12 @@
 
         function handleUpload() {
             const successMessage = document.getElementById('successMessage');
-            successMessage.style.display = 'block';
+            successMessage.style.display = 'flex';
             
             setTimeout(() => {
                 successMessage.style.display = 'none';
             }, 3000);
 
-            // Reset the button and file input
             const uploadBtn = document.getElementById('uploadBtn');
             uploadBtn.innerHTML = `
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -328,6 +381,5 @@
             document.getElementById('selectedFileName').innerHTML = '';
         }
     </script>
-    <script src="scripts.js"></script>
 </body>
 </html>
