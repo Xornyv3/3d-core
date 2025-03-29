@@ -1,13 +1,13 @@
 const express = require("express");
 const multer = require("multer");
-const fs = require("fs");
 const { google } = require("googleapis");
 const nodemailer = require("nodemailer");
 const cors = require("cors");
+const { Readable } = require("stream");
 require("dotenv").config();
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 // Enable CORS
 app.use(cors());
@@ -18,47 +18,45 @@ const auth = new google.auth.GoogleAuth({
   keyFile: "credentials.json",
   scopes: ["https://www.googleapis.com/auth/drive"],
 });
-
 const drive = google.drive({ version: "v3", auth });
 
-// Multer setup for file uploads
-const upload = multer({ dest: "uploads/" });
+// Use memory storage instead of disk storage
+const upload = multer({ storage: multer.memoryStorage() });
 
-// Password-protected access
-const PASSWORD = "roboticore2025";
-
-// Route: File Upload to Google Drive
 app.post("/upload", upload.single("file"), async (req, res) => {
-  const { password } = req.body;
-  if (password !== PASSWORD) {
-    return res.status(403).json({ error: "Unauthorized" });
-  }
-
-  const fileMetadata = {
-    name: req.file.originalname,
-    parents: [process.env.GOOGLE_DRIVE_FOLDER_ID], // Set your Google Drive folder ID
-  };
-
-  const media = {
-    mimeType: req.file.mimetype,
-    body: fs.createReadStream(req.file.path),
-  };
-
   try {
-    const file = await drive.files.create({
+    if (!req.file) {
+      return res.status(400).json({ error: "No file uploaded" });
+    }
+
+    const { originalname, mimetype, buffer } = req.file;
+
+    const fileMetadata = {
+      name: originalname,
+      parents: [process.env.GOOGLE_DRIVE_FOLDER_ID], // Set in .env
+    };
+
+    const media = {
+      mimeType: mimetype,
+      body: Readable.from(buffer),
+    };
+
+    const driveResponse = await drive.files.create({
       resource: fileMetadata,
       media: media,
-      fields: "id",
+      fields: "id, webViewLink",
     });
 
-    fs.unlinkSync(req.file.path); // Delete local file after upload
+    const fileId = driveResponse.data.id;
+    const fileLink = driveResponse.data.webViewLink;
 
-    const fileLink = `https://drive.google.com/uc?id=${file.data.id}`;
-    await sendEmailNotification(req.file.originalname, fileLink);
+    // Send email notification
+    await sendEmailNotification(originalname, fileLink);
 
-    res.json({ success: true, fileLink });
+    res.status(200).json({ message: "File uploaded successfully", fileId, fileLink });
   } catch (error) {
-    res.status(500).json({ error: "Upload failed", details: error.message });
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
@@ -98,6 +96,3 @@ async function sendEmailNotification(fileName, fileLink) {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-
-
-// This is the configuration file for Vercel deployment
