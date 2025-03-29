@@ -4,42 +4,297 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3D-Core | 3D Printing Service</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(to bottom, #111827, #1f2937);
+            color: white;
+        }
+
+        /* Header styles */
+        header {
+            position: relative;
+            overflow: hidden;
+            padding: 4rem 1rem;
+            text-align: center;
+        }
+
+        .header-bg {
+            position: absolute;
+            inset: 0;
+            background-image: url('https://images.unsplash.com/photo-1631468155881-c6c9ff57de1d?q=80&w=2070');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.1;
+            z-index: 1;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .logo-text {
+            font-size: 3rem;
+            font-weight: bold;
+            background: linear-gradient(to right, #60a5fa, #a855f7);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* Main content styles */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 1rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .card {
+            background: rgba(31, 41, 55, 0.5);
+            backdrop-filter: blur(8px);
+            border: 1px solid #374151;
+            border-radius: 1rem;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: #3b82f6;
+            transform: translateY(-4px);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .upload-button {
+            background-color: #3b82f6;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .upload-button:hover {
+            background-color: #2563eb;
+        }
+
+        .selected-file {
+            margin-top: 1rem;
+            color: #9ca3af;
+        }
+
+        .selected-file span {
+            color: #60a5fa;
+        }
+
+        /* Success message styles */
+        .success-message {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background-color: #22c55e;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: none;
+            animation: fadeInDown 0.3s ease-out;
+        }
+
+        /* Robot decoration */
+        .robot-decoration {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            opacity: 0.2;
+            pointer-events: none;
+            width: 16rem;
+            height: 16rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-1rem);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .logo-text {
+                font-size: 2.5rem;
+            }
+
+            .robot-decoration {
+                width: 12rem;
+                height: 12rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
-        <div class="logo">
-            <img src="logo.png" alt="3D-Core Logo">
-            <h1>3D-Core</h1>
+        <div class="header-bg"></div>
+        <div class="header-content">
+            <div class="logo-container">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 9h12v9a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V9Z"></path>
+                    <path d="M5.5 5.5A2.5 2.5 0 0 1 8 3h8a2.5 2.5 0 0 1 0 5H8a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+                </svg>
+                <h1 class="logo-text">3D-Core</h1>
+            </div>
+            <p class="text-xl text-gray-300">Your Reliable 3D Printing Partner</p>
         </div>
-        <p>Your Reliable 3D Printing Partner</p>
     </header>
 
     <main>
-        <section class="info">
-            <h2>Supported File Formats</h2>
-            <p>We accept <strong>.STEP</strong> and <strong>.STL</strong> files for 3D printing.</p>
-        </section>
+        <div class="grid">
+            <!-- File Formats Section -->
+            <div class="card">
+                <div class="card-header">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <path d="m9 15 2 2 4-4"></path>
+                    </svg>
+                    <h2 class="card-title">Supported Formats</h2>
+                </div>
+                <p style="color: #9ca3af;">
+                    We accept <span style="color: #60a5fa; font-weight: 600">.STEP</span> and
+                    <span style="color: #60a5fa; font-weight: 600">.STL</span> files for 3D printing.
+                </p>
+            </div>
 
-        <section class="pricing">
-            <h2>Printing Prices</h2>
-            <p><strong>$0.10 per gram</strong> of printed material.</p>
-        </section>
+            <!-- Pricing Section -->
+            <div class="card">
+                <div class="card-header">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m21.5 9.5-1.5 1.5-1.5-1.5L17 11l-1.5-1.5L14 11l-1.5-1.5L11 11l-1.5-1.5L8 11 6.5 9.5 5 11l-1.5-1.5L2 11V3l1.5 1.5L5 3l1.5 1.5L8 3l1.5 1.5L11 3l1.5 1.5L14 3l1.5 1.5L17 3l1.5 1.5L20 3l1.5 1.5L23 3v8l-1.5-1.5Z"></path>
+                        <path d="M21.5 11.5v4"></path>
+                        <path d="M2 11.5v4"></path>
+                    </svg>
+                    <h2 class="card-title">Printing Prices</h2>
+                </div>
+                <p style="color: #9ca3af;">
+                    <span style="font-size: 1.875rem; font-weight: bold; color: #60a5fa;">$0.10</span>
+                    <span style="color: #9ca3af;"> per gram</span> of printed material.
+                </p>
+            </div>
 
-        <section class="upload">
-            <h2>Upload Your 3D Design</h2>
-            <input type="file" id="fileInput" accept=".stl,.step" style="display: none;">
-            <button id="uploadButton" onclick="handleUpload()">Select File</button>
-            <p id="fileName"></p>
-            <p id="status"></p>
-        </section>
+            <!-- Upload Section -->
+            <div class="card">
+                <div class="card-header">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                    <h2 class="card-title">Upload Design</h2>
+                </div>
+                <div style="text-align: center;">
+                    <input type="file" id="fileInput" accept=".stl,.step" style="display: none;">
+                    <label for="fileInput" class="upload-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                        Select File
+                    </label>
+                    <p id="selectedFileName" class="selected-file"></p>
+                </div>
+            </div>
+        </div>
     </main>
 
-    <!-- Success Popup i hope -->
-    <div id="successMessage" class="popup" style="display: none;">
-        <p>File Uploaded Successfully!</p>
+    <!-- Success Message -->
+    <div id="successMessage" class="success-message">
+        <p style="display: flex; align-items: center; gap: 0.5rem;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <path d="m9 15 2 2 4-4"></path>
+            </svg>
+            File Uploaded Successfully!
+        </p>
     </div>
 
-    <script src="script.js"></script>
+    <!-- Robot Decoration -->
+    <svg class="robot-decoration" xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 8V4H8"></path>
+        <path d="M16 8V4h4"></path>
+        <rect width="16" height="12" x="4" y="8" rx="2"></rect>
+        <path d="M2 14h2"></path>
+        <path d="M20 14h2"></path>
+        <path d="M15 13v2"></path>
+        <path d="M9 13v2"></path>
+    </svg>
+
+    <script>
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const fileName = file.name;
+                document.getElementById('selectedFileName').innerHTML = 'Selected: <span>' + fileName + '</span>';
+                
+                const successMessage = document.getElementById('successMessage');
+                successMessage.style.display = 'block';
+                
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                }, 3000);
+            }
+        });
+    </script>
 </body>
 </html>
