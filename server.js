@@ -98,3 +98,6 @@ async function sendEmailNotification(fileName, fileLink) {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+
+// This is the configuration file for Vercel deployment
