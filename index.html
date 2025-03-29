@@ -243,14 +243,14 @@
                 </div>
                 <div style="text-align: center;">
                     <input type="file" id="fileInput" accept=".stl,.step" style="display: none;">
-                    <label for="fileInput" class="upload-button">
+                    <button id="uploadBtn" class="upload-button" onclick="selectFile()">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                             <polyline points="17 8 12 3 7 8"></polyline>
                             <line x1="12" y1="3" x2="12" y2="15"></line>
                         </svg>
                         Select File
-                    </label>
+                    </button>
                     <p id="selectedFileName" class="selected-file"></p>
                 </div>
             </div>
@@ -281,20 +281,53 @@
     </svg>
 
     <script>
+        function selectFile() {
+            document.getElementById('fileInput').click();
+        }
+
         document.getElementById('fileInput').addEventListener('change', function(event) {
             const file = event.target.files[0];
             if (file) {
                 const fileName = file.name;
                 document.getElementById('selectedFileName').innerHTML = 'Selected: <span>' + fileName + '</span>';
                 
-                const successMessage = document.getElementById('successMessage');
-                successMessage.style.display = 'block';
-                
-                setTimeout(() => {
-                    successMessage.style.display = 'none';
-                }, 3000);
+                // Change button text and onclick handler
+                const uploadBtn = document.getElementById('uploadBtn');
+                uploadBtn.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                    Upload File
+                `;
+                uploadBtn.onclick = handleUpload;
             }
         });
+
+        function handleUpload() {
+            const successMessage = document.getElementById('successMessage');
+            successMessage.style.display = 'block';
+            
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 3000);
+
+            // Reset the button and file input
+            const uploadBtn = document.getElementById('uploadBtn');
+            uploadBtn.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="17 8 12 3 7 8"></polyline>
+                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+                Select File
+            `;
+            uploadBtn.onclick = selectFile;
+            document.getElementById('fileInput').value = '';
+            document.getElementById('selectedFileName').innerHTML = '';
+        }
     </script>
+    <script src="scripts.js"></script>
 </body>
 </html>
