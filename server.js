@@ -64,7 +64,12 @@ app.post("/upload", upload.single("file"), async (req, res) => {
     // Send email notification
     await sendEmailNotification(originalname, fileLink);
 
-    res.status(200).json({ message: "File uploaded successfully", fileId, fileLink });
+    res.status(200).json({ 
+        success: true, // Add this line
+        message: "File uploaded successfully", 
+        fileId, 
+        fileLink 
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
