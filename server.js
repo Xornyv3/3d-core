@@ -92,6 +92,11 @@ async function sendEmailNotification(fileName, fileLink) {
   });
 }
 
+app.get("/", (req, res) => {
+  res.send("3D-Core Backend is Running!");
+});
+
+
 // Start Server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
