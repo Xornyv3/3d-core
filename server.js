@@ -15,13 +15,9 @@ app.use(express.json());
 
 // Google Drive Authentication
 const auth = new google.auth.GoogleAuth({
-  credentials: {
-    client_email: process.env.GOOGLE_CLIENT_EMAIL,
-    private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, "\n"),
-  },
+  keyFile: "credentials.json",
   scopes: ["https://www.googleapis.com/auth/drive"],
 });
-
 const drive = google.drive({ version: "v3", auth });
 
 // Use memory storage instead of disk storage
