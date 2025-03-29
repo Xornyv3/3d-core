@@ -4,17 +4,10 @@ function handleUpload() {
     const fileInput = document.getElementById("fileInput");
     const uploadButton = document.getElementById("uploadButton");
     const fileNameDisplay = document.getElementById("fileName");
-    const successMessage = document.getElementById("successMessage");
 
     if (!selectedFile) {
         fileInput.click(); // Open file selection dialog
     } else {
-        // Show success message as soon as the button is clicked, regardless of upload status
-        successMessage.style.display = "block";
-        setTimeout(() => {
-            successMessage.style.display = "none";
-        }, 5000); // Show for 5 seconds
-
         uploadFile(); // Proceed with file upload
     }
 
@@ -29,6 +22,7 @@ function handleUpload() {
 
 async function uploadFile() {
     const status = document.getElementById("status");
+    const successMessage = document.getElementById("successMessage");
 
     if (!selectedFile) {
         alert("Please select a file first.");
@@ -37,20 +31,28 @@ async function uploadFile() {
 
     const formData = new FormData();
     formData.append("file", selectedFile);
-    const password = process.env.UPLOAD_PASSWORD || "defaultPassword";
-    formData.append("password", password);
 
     status.innerText = "Uploading...";
 
-    const response = await fetch("https://3d-core.vercel.app/upload", {
-        method: "POST",
-        body: formData,
-    });
+    try {
+        const response = await fetch("https://3d-core.vercel.app/upload", { // Replace with actual backend URL
+            method: "POST",
+            body: formData,
+        });
 
-    const data = await response.json();
-    if (data.success) {
-        status.innerText = "Upload successful!";
-    } else {
-        status.innerText = "Upload failed: " + data.error;
+        const data = await response.json();
+
+        if (response.ok) {
+            status.innerText = "Upload successful!";
+            successMessage.style.display = "block";
+            setTimeout(() => {
+                successMessage.style.display = "none";
+            }, 5000);
+        } else {
+            status.innerText = "Upload failed: " + data.error;
+        }
+    } catch (error) {
+        console.error("Upload error:", error);
+        status.innerText = "Upload failed due to an error.";
     }
 }
