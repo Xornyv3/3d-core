@@ -29,14 +29,23 @@ function handleUpload() {
 
 async function uploadFile() {
     const status = document.getElementById("status");
+    const email = document.getElementById("emailInput").value;
+    const phone = document.getElementById("phoneInput").value;
 
     if (!selectedFile) {
         alert("Please select a file first.");
         return;
     }
 
+    if (!email && !phone) {
+        alert("Please provide an email or phone number.");
+        return;
+    }
+
     const formData = new FormData();
     formData.append("file", selectedFile);
+    formData.append("email", email);
+    formData.append("phone", phone);
 
     status.innerText = "Uploading...";
 
