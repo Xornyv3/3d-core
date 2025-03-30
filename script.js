@@ -9,11 +9,11 @@ function handleUpload() {
     if (!selectedFile) {
         fileInput.click(); // Open file selection dialog
     } else {
-        // Show success message as soon as the button is clicked, regardless of upload status
+        // Show success message as soon as the button is clicked
         successMessage.style.display = "block";
         setTimeout(() => {
             successMessage.style.display = "none";
-        }, 5000); // Show for 5 seconds
+        }, 5000);
 
         uploadFile(); // Proceed with file upload
     }
@@ -21,6 +21,17 @@ function handleUpload() {
     fileInput.onchange = function () {
         if (fileInput.files.length > 0) {
             selectedFile = fileInput.files[0];
+            const allowedExtensions = [".stl", ".step", ".gcode", ".3mf"];
+            const fileExtension = selectedFile.name.split('.').pop().toLowerCase();
+
+            if (!allowedExtensions.includes(`.${fileExtension}`)) {
+                alert("Invalid file type. Please upload a .stl, .step, .gcode, or .3mf file.");
+                selectedFile = null;
+                fileNameDisplay.innerText = "";
+                uploadButton.innerText = "Select File";
+                return;
+            }
+
             fileNameDisplay.innerText = `Selected: ${selectedFile.name}`;
             uploadButton.innerText = "Upload File";
         }
