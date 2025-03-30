@@ -41,7 +41,13 @@ app.post("/upload", upload.single("file"), async (req, res) => {
     }
 
     const { originalname, mimetype, buffer } = req.file;
+    const allowedExtensions = [".stl", ".step", ".gcode", ".3mf"];
+    const fileExtension = originalname.split('.').pop().toLowerCase();
     const { email, phone } = req.body; // Get email and phone from request
+
+    if (!allowedExtensions.includes(`.${fileExtension}`)) {
+      return res.status(400).json({ error: "Invalid file type. Allowed: .stl, .step, .gcode, .3mf" });
+    }
 
     const fileMetadata = {
       name: originalname,
