@@ -202,6 +202,42 @@ footer {
     margin-bottom: 10px;
 }
 
+/* Input Fields */
+.input-field {
+    width: 100%;
+    padding: 0.75rem;
+    margin: 0.5rem 0;
+    border-radius: 0.5rem;
+    border: 1px solid #374151;
+    background: rgba(31, 41, 55, 0.5);
+    color: white;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.input-field::placeholder {
+    color: #9ca3af;
+    opacity: 0.8;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.input-field:focus {
+    border-color: #60a5fa;
+    background: rgba(31, 41, 55, 0.7);
+}
+
+.input-field:hover::placeholder {
+    color: white;
+}
+
+/* Add spacing for better layout */
+.upload input {
+    margin-bottom: 0.75rem;
+}
+
+
 /* Responsive Adjustments */
 @media (max-width: 768px) {
     .logo-text {
