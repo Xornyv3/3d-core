@@ -141,7 +141,6 @@ p {
 .about-img {
     width: 400px;
     height: 300px;
-    margin-left: -2rem;
     object-fit: cover;
     border-radius: 1rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -297,6 +296,5 @@ footer {
     .about-img {
         width: 100%;
         height: auto;
-        margin-left: 0rem;
     }
 }
