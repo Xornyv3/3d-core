@@ -61,7 +61,7 @@ npm start
 - Only the admin can view and download uploaded files
 
 ## 📬 Contact & Support
-For inquiries, collaborations, or issues, feel free to **open an issue** or contact us at **[your-email@example.com](mailto:your-email@example.com)**.
+For inquiries, collaborations, or issues, feel free to **open an issue** or contact us at **[alaguiabdoullah@gmail.com](mailto:alaguiabdoullah@gmail.com)**.
 
 ---
 
