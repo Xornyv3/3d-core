@@ -8,7 +8,7 @@ Welcome to **3D-Core**, a project by **Roboticore**, the robotics and innovation
 - A **Node.js** backend for handling file uploads and processing
 
 ## 🌟 Features
-- 📂 **Upload 3D design files** (.STEP, .STL) with ease
+- 📂 **Upload 3D design files** (.STEP, .STL, .3MF, .GCODE) with ease
 - 💰 **Automatic price calculation** for 3D printing
 - 🔒 **Secure access** with a simple authentication system
 - 📊 **Admin dashboard** to manage uploaded files
