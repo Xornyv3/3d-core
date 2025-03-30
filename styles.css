@@ -1,81 +1,172 @@
-/* Popup Success Message */
-.popup {
-    display: none;
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background-color: #28a745;
-    color: white;
-    padding: 15px;
-    border-radius: 5px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    font-size: 16px;
-    z-index: 1000;
-}
-
-/* General Styling */
-body {
-    font-family: Arial, sans-serif;
-    text-align: center;
+/* Global Reset */
+* {
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    box-sizing: border-box;
+}
+
+/* Background & Font */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    min-height: 100vh;
+    background: linear-gradient(180deg, #111827 0%, #1e3a8a 50%, #111827 100%);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 /* Header */
 header {
-    background: linear-gradient(90deg, #2c3e50, #3498db);
-    color: white;
-    padding: 20px;
+    position: relative;
+    width: 100%;
+    padding: 3rem 1rem;
+    text-align: center;
+    overflow: hidden;
+    background: linear-gradient(to bottom, transparent, rgba(17, 24, 39, 0.5), #111827);
+}
+
+.header-overlay {
+    position: absolute;
+    inset: 0;
+    background-image: url('https://images.unsplash.com/photo-1631468155881-c6c9ff57de1d?q=80&w=2070');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.1;
+}
+
+.header-content {
+    position: relative;
+    z-index: 2;
+    max-width: 1280px;
+    margin: 0 auto;
 }
 
 .logo {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 1rem;
+    margin-bottom: 20px;
 }
 
 .logo img {
-    width: 50px;
-    height: 50px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}   
+
+.logo-text {
+    font-size: 3rem;
+    font-weight: bold;
+    background: linear-gradient(to right, #60a5fa, #a855f7);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 
-h1 {
-    margin: 0;
-    font-size: 28px;
+.subtitle {
+    font-size: 1.25rem;
+    color: #bfdbfe;
+    font-weight: 300;
 }
 
-/* Sections */
-section {
-    background: white;
-    margin: 20px auto;
-    padding: 20px;
-    width: 80%;
-    border-radius: 8px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+/* Main Content */
+main {
+    max-width: 1280px;
+    width: 90%;
+    margin: 2rem auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
 }
 
+/* Cards */
+.card {
+    background: rgba(31, 41, 55, 0.5);
+    backdrop-filter: blur(10px);
+    border: 1px solid #374151;
+    border-radius: 1rem;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    border-color: #3b82f6;
+    transform: translateY(-5px);
+}
+
+/* Typography */
 h2 {
-    color: #2c3e50;
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
 }
 
-/* Upload Section */
-.upload input {
-    margin-top: 10px;
+p {
+    font-size: 1.125rem;
+    color: #d1d5db;
 }
 
-button {
-    background-color: #3498db;
+.highlight {
+    color: #60a5fa;
+    font-weight: 600;
+}
+
+.price {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #60a5fa;
+}
+
+/* Upload Section (Untouched) */
+.upload {
+    text-align: center;
+}
+
+.upload button {
+    background-color: #3b82f6;
     color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
     border: none;
-    padding: 10px 20px;
     cursor: pointer;
-    font-size: 16px;
-    border-radius: 5px;
+    font-size: 1rem;
+    transition: background-color 0.2s ease;
+    margin-bottom: 20px;
     margin-top: 10px;
 }
 
-button:hover {
-    background-color: #2980b9;
+.upload button:hover {
+    background-color: #2563eb;
+}
+
+/* Success Popup */
+.popup {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    background-color: #22c55e;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    display: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .logo-text {
+        font-size: 2.5rem;
+    }
+
+    .card {
+        padding: 1.5rem;
+    }
+
+    .upload button {
+        width: 100%;
+    }
 }
