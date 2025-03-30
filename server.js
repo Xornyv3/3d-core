@@ -41,10 +41,11 @@ app.post("/upload", upload.single("file"), async (req, res) => {
     }
 
     const { originalname, mimetype, buffer } = req.file;
+    const { email, phone } = req.body; // Get email and phone from request
 
     const fileMetadata = {
       name: originalname,
-      parents: [process.env.GOOGLE_DRIVE_FOLDER_ID], // Set in .env
+      parents: [process.env.GOOGLE_DRIVE_FOLDER_ID],
     };
 
     const media = {
@@ -61,11 +62,11 @@ app.post("/upload", upload.single("file"), async (req, res) => {
     const fileId = driveResponse.data.id;
     const fileLink = driveResponse.data.webViewLink;
 
-    // Send email notification
-    await sendEmailNotification(originalname, fileLink);
+    // Send email notification with uploader details
+    await sendEmailNotification(originalname, fileLink, email, phone);
 
     res.status(200).json({ 
-        success: true, // Add this line
+        success: true,
         message: "File uploaded successfully", 
         fileId, 
         fileLink 
@@ -75,6 +76,7 @@ app.post("/upload", upload.single("file"), async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
 
 // Route: List Uploaded Files
 app.get("/files", async (req, res) => {
@@ -91,7 +93,7 @@ app.get("/files", async (req, res) => {
 });
 
 // Email Notification Function
-async function sendEmailNotification(fileName, fileLink) {
+async function sendEmailNotification(fileName, fileLink, email, phone) {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -100,13 +102,20 @@ async function sendEmailNotification(fileName, fileLink) {
     },
   });
 
+  const uploaderInfo = `
+Uploader Details:
+${email ? "Email: " + email : ""}
+${phone ? "Phone: " + phone : ""}
+  `.trim();
+
   await transporter.sendMail({
     from: process.env.EMAIL_USER,
     to: process.env.ADMIN_EMAIL,
     subject: "New 3D File Uploaded",
-    text: `A new file has been uploaded: ${fileName}\nDownload: ${fileLink}`,
+    text: `A new file has been uploaded: ${fileName}\nDownload: ${fileLink}\n\n${uploaderInfo}`,
   });
 }
+
 
 app.get("/", (req, res) => {
   res.send("3D-Core Backend is Running!");
